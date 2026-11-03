@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Search, MapPin, SlidersHorizontal, ChevronDown, Grid, List, Star, CheckCircle, Calendar, ArrowRight, Clock, Users, School, X } from 'lucide-react';
+import { Search, MapPin, SlidersHorizontal, ChevronDown, Grid, List, Star, CheckCircle, Calendar, ArrowRight, Clock, School, X } from 'lucide-react';
 import { POPULAR_LISTINGS } from '../data/mockListings';
 import { Listing } from '../types';
 

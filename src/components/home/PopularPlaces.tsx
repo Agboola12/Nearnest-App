@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Star, CheckCircle, Calendar, ArrowRight, Clock, Users, School } from 'lucide-react';
-import { POPULAR_LISTINGS } from '../../data/mockListings';
+import { FEATURED_LISTINGS } from '../../data/mockListings';
 import { Listing } from '../../types';
 
 export const PopularPlaces: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'trending' | 'top_rated' | 'instant'>('all');
 
-  const filteredListings = POPULAR_LISTINGS.filter((item) => {
+  const filteredListings = FEATURED_LISTINGS.filter((item) => {
     if (activeFilter === 'top_rated') return (item.rating || 0) >= 4.8;
     if (activeFilter === 'instant') return item.isBookable;
     return true;

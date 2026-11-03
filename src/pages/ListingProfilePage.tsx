@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Star, CheckCircle, Clock, Calendar, ArrowLeft, Phone, Mail, Share2, Heart, Navigation, ChevronRight, Users } from 'lucide-react';
+import { MapPin, Star, CheckCircle, Clock, Calendar, Phone, Mail, Share2, Heart, Navigation, ChevronRight, Users } from 'lucide-react';
 import { POPULAR_LISTINGS } from '../data/mockListings';
 import { NotFoundPage } from './NotFoundPage';
 

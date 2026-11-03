@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, Clock, MapPin, CheckCircle, ChevronRight, User, Phone, Mail, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Clock, CheckCircle, ChevronRight, User, AlertCircle } from 'lucide-react';
 import { POPULAR_LISTINGS } from '../data/mockListings';
 
 const SERVICES = [

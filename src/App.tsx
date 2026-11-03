@@ -7,26 +7,23 @@ import { ListingProfilePage } from './pages/ListingProfilePage';
 import { BookingPage } from './pages/BookingPage';
 import { AccountPage } from './pages/AccountPage';
 import { AuthPage } from './pages/AuthPage';
+import { OwnerDashboardPage } from './pages/OwnerDashboardPage';
+import { ServicesDirectoryPage } from './pages/ServicesDirectoryPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
+import { OwnerLayout } from './layouts/OwnerLayout';
 
 export const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/owner" element={<OwnerLayout />}>
+          <Route index element={<OwnerDashboardPage />} />
+        </Route>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="search" element={<SearchResultsPage />} />
-          <Route
-            path="services"
-            element={
-              <PlaceholderPage
-                title="Services & Trades Directory"
-                description="Local barber shops, healthcare clinics, trades, and bookable service providers."
-                phase="Phase 2: Discovery Directory"
-              />
-            }
-          />
+          <Route path="services" element={<ServicesDirectoryPage />} />
           <Route
             path="shops"
             element={
@@ -66,16 +63,6 @@ export const App: React.FC = () => {
               <PlaceholderPage
                 title="Listing Creation Wizard"
                 description="8-step onboarding wizard for place owners and administrators."
-                phase="Phase 6: Provider Suite"
-              />
-            }
-          />
-          <Route
-            path="owner"
-            element={
-              <PlaceholderPage
-                title="Business Owner Dashboard"
-                description="Schedule overview, appointment confirmation queue, and service catalog management."
                 phase="Phase 6: Provider Suite"
               />
             }
