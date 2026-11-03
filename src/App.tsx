@@ -10,6 +10,7 @@ import { AuthPage } from './pages/AuthPage';
 import { OwnerDashboardPage } from './pages/OwnerDashboardPage';
 import { ServicesDirectoryPage } from './pages/ServicesDirectoryPage';
 import { ChurchesSchoolsPage } from './pages/ChurchesSchoolsPage';
+import { HowItWorksPage } from './pages/HowItWorksPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import { OwnerLayout } from './layouts/OwnerLayout';
 
@@ -36,16 +37,7 @@ export const App: React.FC = () => {
             }
           />
           <Route path="churches-and-schools" element={<ChurchesSchoolsPage />} />
-          <Route
-            path="how-it-works"
-            element={
-              <PlaceholderPage
-                title="How NearNest Works"
-                description="Civic registry standards, verified badges, and provider guidelines."
-                phase="Phase 2: Civic Standards"
-              />
-            }
-          />
+          <Route path="how-it-works" element={<HowItWorksPage />} />
           <Route path="listing/:slug" element={<ListingProfilePage />} />
           <Route path="booking/:slug" element={<BookingPage />} />
           <Route path="account" element={<AccountPage />} />
