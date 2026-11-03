@@ -28,6 +28,40 @@ export interface Listing {
   serviceCategory?: string;
   /** Optional "from" price shown on service provider cards, e.g. "£25". */
   startingPrice?: string;
+  /** Short public description, used on institution cards and profiles. */
+  description?: string;
+  /** Sub-category used by the churches & schools directory. */
+  institutionType?: string;
+}
+
+export type InstitutionType =
+  | 'primary'
+  | 'secondary'
+  | 'university'
+  | 'church'
+  | 'nursery'
+  | 'community';
+
+export type InstitutionIcon =
+  | 'school'
+  | 'graduation_cap'
+  | 'landmark'
+  | 'church'
+  | 'baby'
+  | 'users';
+
+export interface InstitutionCategory {
+  id: InstitutionType;
+  title: string;
+  description: string;
+  count: string;
+  iconName: InstitutionIcon;
+  searchTerm: string;
+}
+
+export interface Institution extends Listing {
+  institutionType: InstitutionType;
+  description: string;
 }
 
 export type ServiceCategoryIcon =

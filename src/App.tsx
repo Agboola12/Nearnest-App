@@ -9,6 +9,7 @@ import { AccountPage } from './pages/AccountPage';
 import { AuthPage } from './pages/AuthPage';
 import { OwnerDashboardPage } from './pages/OwnerDashboardPage';
 import { ServicesDirectoryPage } from './pages/ServicesDirectoryPage';
+import { ChurchesSchoolsPage } from './pages/ChurchesSchoolsPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import { OwnerLayout } from './layouts/OwnerLayout';
 
@@ -34,16 +35,7 @@ export const App: React.FC = () => {
               />
             }
           />
-          <Route
-            path="churches-and-schools"
-            element={
-              <PlaceholderPage
-                title="Churches & Schools Directory"
-                description="Parish schedules, civic halls, nurseries, and accredited community schools."
-                phase="Phase 2: Discovery Directory"
-              />
-            }
-          />
+          <Route path="churches-and-schools" element={<ChurchesSchoolsPage />} />
           <Route
             path="how-it-works"
             element={

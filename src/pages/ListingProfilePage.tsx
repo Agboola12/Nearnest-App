@@ -135,10 +135,15 @@ export const ListingProfilePage: React.FC = () => {
               <div className="bg-surface-card rounded-2xl border border-border-subtle p-6 shadow-sm">
                 <h2 className="text-xl font-bold text-text-primary mb-4">About</h2>
                 <p className="text-text-secondary leading-relaxed">
-                  {listing.category === 'services' && 'Professional grooming services with skilled barbers providing quality cuts and traditional techniques in a welcoming neighborhood setting.'}
-                  {listing.category === 'shops' && 'Independent local shop offering curated products and personal service in the heart of the community.'}
-                  {listing.category === 'churches' && 'Community parish providing worship services, community halls for hire, and local outreach programs.'}
-                  {listing.category === 'schools' && 'Educational institution committed to providing quality learning experiences with community-focused values.'}
+                  {listing.description ||
+                    (listing.category === 'services' &&
+                      'Professional grooming services with skilled barbers providing quality cuts and traditional techniques in a welcoming neighborhood setting.') ||
+                    (listing.category === 'shops' &&
+                      'Independent local shop offering curated products and personal service in the heart of the community.') ||
+                    (listing.category === 'churches' &&
+                      'Community parish providing worship services, community halls for hire, and local outreach programs.') ||
+                    (listing.category === 'schools' &&
+                      'Educational institution committed to providing quality learning experiences with community-focused values.')}
                 </p>
               </div>
 
