@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, Clock3, FileEdit, PauseCircle, XCircle } from 'lucide-react';
+import { Ban, CheckCircle2, Clock3, FileEdit, PauseCircle, XCircle } from 'lucide-react';
 import { AppointmentStatus, OwnerListingStatus } from '../../types';
 
 interface AppointmentStatusBadgeProps {
@@ -34,8 +34,17 @@ export const AppointmentStatusBadge: React.FC<AppointmentStatusBadgeProps> = ({ 
     );
   }
 
+  if (status === 'rejected') {
+    return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-status-rejected-bg text-status-rejected-text text-xs font-semibold whitespace-nowrap">
+        <Ban className="w-3.5 h-3.5" />
+        Rejected
+      </span>
+    );
+  }
+
   return (
-    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-status-rejected-bg text-status-rejected-text text-xs font-semibold whitespace-nowrap">
+    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-text-secondary text-xs font-semibold whitespace-nowrap">
       <XCircle className="w-3.5 h-3.5" />
       Cancelled
     </span>

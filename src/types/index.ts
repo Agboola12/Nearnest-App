@@ -93,7 +93,13 @@ export interface CategoryCard {
   iconName: 'content_cut' | 'storefront' | 'church' | 'school';
 }
 
-export type AppointmentStatus = 'confirmed' | 'pending' | 'completed' | 'cancelled';
+export type AppointmentStatus =
+  | 'confirmed'
+  | 'pending'
+  | 'completed'
+  | 'cancelled'
+  | 'rejected';
+export type PaymentStatus = 'paid' | 'pending' | 'refunded' | 'not_charged';
 export type OwnerListingStatus = 'published' | 'draft' | 'paused';
 
 export interface OwnerProfile {
@@ -159,12 +165,15 @@ export interface OwnerAppointment {
   customerImage?: string;
   customerNote: string;
   customerPhone: string;
+  customerEmail: string;
   service: string;
   duration: string;
   price: string;
   date: string;
   time: string;
   status: AppointmentStatus;
+  paymentStatus: PaymentStatus;
+  listingId: string;
   listingName: string;
 }
 
