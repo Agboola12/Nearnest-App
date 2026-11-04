@@ -1,4 +1,10 @@
-import { OwnerAppointment, OwnerListing, OwnerProfile } from '../types';
+import {
+  OwnerAppointment,
+  OwnerListing,
+  OwnerNotification,
+  OwnerProfile,
+  OwnerService,
+} from '../types';
 
 const toLocalIsoDate = (date: Date) => {
   const pad = (value: number) => String(value).padStart(2, '0');
@@ -19,6 +25,8 @@ export const OWNER_PROFILE: OwnerProfile = {
   avatar:
     'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=160&q=80',
   businessName: 'The Heritage Barber & Co',
+  businessLogo:
+    'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=320&q=80',
   address: '14 George Street, Richmond, TW9 1JY',
   addressShort: '14 George Street, Richmond',
   profileId: '#NN-7741',
@@ -42,6 +50,12 @@ export const OWNER_LISTINGS: OwnerListing[] = [
     bookingsThisMonth: 42,
     servicesCount: 6,
     nextAvailable: 'Today, 10:30 AM',
+    description:
+      'A warm, traditional barbershop on George Street offering precision cuts, hot towel shaves and unhurried grooming for the whole neighbourhood.',
+    phone: '+44 20 8940 2214',
+    email: 'hello@heritagebarber.co.uk',
+    website: 'heritagebarber.co.uk',
+    openingHours: 'Tue – Sat · 9:00 AM – 7:00 PM',
   },
   {
     id: 'ol-2',
@@ -56,8 +70,14 @@ export const OWNER_LISTINGS: OwnerListing[] = [
     status: 'draft',
     isVerified: false,
     bookingsThisMonth: 0,
-    servicesCount: 3,
+    servicesCount: 0,
     nextAvailable: 'Not published yet',
+    description:
+      'A calm, contemporary grooming studio in Kew Road. Currently in setup ahead of its public launch.',
+    phone: '+44 20 8940 5521',
+    email: 'studio@heritagegrooming.co.uk',
+    website: 'heritagegrooming.co.uk',
+    openingHours: 'Opening hours not published yet',
   },
   {
     id: 'ol-3',
@@ -74,8 +94,148 @@ export const OWNER_LISTINGS: OwnerListing[] = [
     rating: 4.7,
     reviewCount: 46,
     bookingsThisMonth: 12,
-    servicesCount: 4,
+    servicesCount: 2,
     nextAvailable: 'Resumes next week',
+    description:
+      'Hands-on barbering workshops and clipper masterclasses for new and developing professionals in Richmond.',
+    phone: '+44 20 8940 7780',
+    email: 'academy@heritagebarber.co.uk',
+    website: 'heritagebarber.co.uk/academy',
+    openingHours: 'Mon – Wed · 10:00 AM – 6:00 PM',
+  },
+];
+
+export const OWNER_SERVICES: OwnerService[] = [
+  {
+    id: 'svc-1',
+    listingId: 'ol-1',
+    listingName: 'The Heritage Barber & Co',
+    name: 'Signature Haircut & Hot Towel',
+    description: 'Consultation, precision cut, hot towel finish and styling.',
+    duration: '45 min',
+    price: '£45',
+    isActive: true,
+  },
+  {
+    id: 'svc-2',
+    listingId: 'ol-1',
+    listingName: 'The Heritage Barber & Co',
+    name: 'Classic Beard Trim & Shape',
+    description: 'Beard shaping, line-up and conditioning oil treatment.',
+    duration: '30 min',
+    price: '£30',
+    isActive: true,
+  },
+  {
+    id: 'svc-3',
+    listingId: 'ol-1',
+    listingName: 'The Heritage Barber & Co',
+    name: 'Executive Cut & Scalp Revitaliser',
+    description: 'Extended cut with a calming scalp treatment and hot towel.',
+    duration: '60 min',
+    price: '£65',
+    isActive: true,
+  },
+  {
+    id: 'svc-4',
+    listingId: 'ol-1',
+    listingName: 'The Heritage Barber & Co',
+    name: 'Hot Towel Shave',
+    description: 'Traditional straight-razor shave with warm towels and balm.',
+    duration: '30 min',
+    price: '£32',
+    isActive: true,
+  },
+  {
+    id: 'svc-5',
+    listingId: 'ol-1',
+    listingName: 'The Heritage Barber & Co',
+    name: 'Standard Cut & Styling',
+    description: 'Everyday cut and finish for adults and young people.',
+    duration: '40 min',
+    price: '£35',
+    isActive: true,
+  },
+  {
+    id: 'svc-6',
+    listingId: 'ol-1',
+    listingName: 'The Heritage Barber & Co',
+    name: 'Wash & Blow Dry',
+    description: 'Relaxing wash, scalp massage and a polished blow dry.',
+    duration: '30 min',
+    price: '£28',
+    isActive: false,
+  },
+  {
+    id: 'svc-7',
+    listingId: 'ol-3',
+    listingName: 'Heritage Barber Academy',
+    name: 'Barbering Fundamentals Workshop',
+    description: 'A practical full-day introduction to clipper and scissor work.',
+    duration: '6 hrs',
+    price: '£120',
+    isActive: true,
+  },
+  {
+    id: 'svc-8',
+    listingId: 'ol-3',
+    listingName: 'Heritage Barber Academy',
+    name: 'Clipper Masterclass',
+    description: 'Fades, tapers and blending techniques with live models.',
+    duration: '2 hrs',
+    price: '£85',
+    isActive: true,
+  },
+];
+
+export const OWNER_NOTIFICATIONS: OwnerNotification[] = [
+  {
+    id: 'note-1',
+    type: 'booking',
+    title: 'New booking request',
+    message: 'Elena Chen requested Executive Cut & Scalp Revitaliser today at 2:15 PM.',
+    time: '12 minutes ago',
+    isRead: false,
+  },
+  {
+    id: 'note-2',
+    type: 'appointment',
+    title: 'Appointment accepted',
+    message: "Alistair Hughes's 10:30 AM appointment was confirmed automatically.",
+    time: '48 minutes ago',
+    isRead: false,
+  },
+  {
+    id: 'note-3',
+    type: 'booking',
+    title: 'New booking request',
+    message: 'Grace Adeyemi requested a Colour Consultation in two days at 1:30 PM.',
+    time: '2 hours ago',
+    isRead: false,
+  },
+  {
+    id: 'note-4',
+    type: 'appointment',
+    title: 'Appointment completed',
+    message: "Priya Nair's Wash & Blow Dry was marked as completed.",
+    time: 'Today, 9:35 AM',
+    isRead: true,
+  },
+  {
+    id: 'note-5',
+    type: 'review',
+    title: 'New customer review',
+    message: 'Julian left a 5-star review for The Heritage Barber & Co.',
+    time: 'Yesterday',
+    isRead: true,
+  },
+  {
+    id: 'note-6',
+    type: 'system',
+    title: 'Service paused',
+    message: 'Wash & Blow Dry was paused and is no longer visible to customers.',
+    time: 'Yesterday',
+    isRead: true,
   },
 ];
 

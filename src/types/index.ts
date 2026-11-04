@@ -102,6 +102,7 @@ export interface OwnerProfile {
   email: string;
   avatar: string;
   businessName: string;
+  businessLogo?: string;
   address: string;
   addressShort: string;
   profileId: string;
@@ -122,6 +123,33 @@ export interface OwnerListing {
   bookingsThisMonth: number;
   servicesCount: number;
   nextAvailable?: string;
+  description?: string;
+  phone?: string;
+  email?: string;
+  website?: string;
+  openingHours?: string;
+}
+
+export interface OwnerService {
+  id: string;
+  listingId: string;
+  listingName: string;
+  name: string;
+  description: string;
+  duration: string;
+  price: string;
+  isActive: boolean;
+}
+
+export type OwnerNotificationType = 'booking' | 'appointment' | 'review' | 'system';
+
+export interface OwnerNotification {
+  id: string;
+  type: OwnerNotificationType;
+  title: string;
+  message: string;
+  time: string;
+  isRead: boolean;
 }
 
 export interface OwnerAppointment {
