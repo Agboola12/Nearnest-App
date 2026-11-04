@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, User, ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react';
 import { BrandLogo } from '../components/common/BrandLogo';
@@ -12,6 +12,10 @@ export const AuthPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, []);
 
   const [signInData, setSignInData] = useState({
     email: '',
@@ -79,9 +83,12 @@ export const AuthPage: React.FC = () => {
     
     setTimeout(() => {
       setIsSubmitting(false);
-      setMessage({ type: 'success', text: 'Demo: Sign in successful! (No real authentication)' });
+      setMessage({
+        type: 'success',
+        text: 'Demo: Sign in successful! Taking you to your business dashboard...',
+      });
       setTimeout(() => {
-        navigate('/account');
+        navigate('/owner');
       }, 1500);
     }, 1000);
   };
@@ -365,6 +372,9 @@ export const AuthPage: React.FC = () => {
           </div>
 
           <p className="text-center text-sm text-text-muted mt-6">
+            One NearNest account covers personal bookings and business management.
+          </p>
+          <p className="text-center text-xs text-text-muted mt-1">
             This is a demo. No real authentication or data storage.
           </p>
         </div>

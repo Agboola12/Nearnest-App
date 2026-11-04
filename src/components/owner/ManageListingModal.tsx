@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { CalendarClock, ChevronDown, MapPin, Star, X } from 'lucide-react';
+import {
+  Clock3,
+  Globe2,
+  Mail,
+  MapPin,
+  Phone,
+  Star,
+  Store,
+  X,
+} from 'lucide-react';
 import { OwnerListing, OwnerListingStatus } from '../../types';
 import { ListingStatusBadge } from './StatusBadge';
 
@@ -14,8 +23,18 @@ export const ManageListingModal: React.FC<ManageListingModalProps> = ({
   onClose,
   onSave,
 }) => {
-  const [status, setStatus] = useState<OwnerListingStatus>(listing.status);
-  const [acceptingBookings, setAcceptingBookings] = useState(listing.status === 'published');
+  const [form, setForm] = useState({
+    name: listing.name,
+    categoryLabel: listing.categoryLabel,
+    address: listing.address,
+    phone: listing.phone ?? '',
+    email: listing.email ?? '',
+    website: listing.website ?? '',
+    description: listing.description ?? '',
+    openingHours: listing.openingHours ?? '',
+    status: listing.status,
+    acceptingBookings: listing.status === 'published',
+  });
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -27,6 +46,31 @@ export const ManageListingModal: React.FC<ManageListingModalProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
+
+  const canSave = form.name.trim().length > 0 && form.address.trim().length > 0;
+
+  const inputClasses =
+    'w-full rounded-lg border border-border-subtle bg-surface-card px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors';
+
+  const handleSave = () => {
+    if (!canSave) return;
+
+    onSave({
+      ...listing,
+      name: form.name.trim(),
+      categoryLabel: form.categoryLabel.trim() || listing.categoryLabel,
+      address: form.address.trim(),
+      phone: form.phone.trim(),
+      email: form.email.trim(),
+      website: form.website.trim(),
+      description: form.description.trim(),
+      openingHours: form.openingHours.trim(),
+      status: form.status as OwnerListingStatus,
+      nextAvailable: form.acceptingBookings
+        ? 'Now accepting bookings'
+        : listing.nextAvailable,
+    });
+  };
 
   return (
     <div
@@ -42,14 +86,14 @@ export const ManageListingModal: React.FC<ManageListingModalProps> = ({
         onClick={onClose}
       />
 
-      <div className="relative w-full sm:max-w-lg max-h-[92vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-surface-card shadow-floating border border-border-subtle">
+      <div className="relative w-full sm:max-w-2xl max-h-[92vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-surface-card shadow-floating border border-border-subtle">
         <div className="sticky top-0 z-10 flex items-center justify-between gap-3 px-5 py-4 bg-surface-card/95 backdrop-blur-md border-b border-border-subtle">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
-              Listing settings
+              Business profile
             </p>
             <h2 id="manage-listing-title" className="text-lg font-bold text-text-primary">
-              Manage listing
+              Edit business information
             </h2>
           </div>
           <button
@@ -69,17 +113,17 @@ export const ManageListingModal: React.FC<ManageListingModalProps> = ({
               alt={listing.coverAlt}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-text-primary/60 via-text-primary/5 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-text-primary/70 via-text-primary/10 to-transparent" />
             <ListingStatusBadge
-              status={status}
+              status={form.status}
               isVerified={listing.isVerified}
               className="absolute top-3 left-3"
             />
             <div className="absolute bottom-3 left-3 right-3 text-white">
-              <h3 className="text-base font-bold drop-shadow-sm">{listing.name}</h3>
+              <h3 className="text-base font-bold drop-shadow-sm">{form.name}</h3>
               <p className="mt-0.5 flex items-center gap-1 text-[11px] text-white/90">
                 <MapPin className="w-3 h-3" />
-                {listing.address}
+                {form.address}
               </p>
             </div>
           </div>
@@ -116,61 +160,236 @@ export const ManageListingModal: React.FC<ManageListingModalProps> = ({
             </div>
           </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label
+                htmlFor="listing-name"
+                className="block text-xs font-semibold text-text-secondary mb-1.5"
+              >
+                Business name
+              </label>
+              <input
+                id="listing-name"
+                type="text"
+                value={form.name}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, name: event.target.value }))
+                }
+                className={inputClasses}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="listing-category"
+                className="block text-xs font-semibold text-text-secondary mb-1.5"
+              >
+                Category
+              </label>
+              <input
+                id="listing-category"
+                type="text"
+                value={form.categoryLabel}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, categoryLabel: event.target.value }))
+                }
+                className={inputClasses}
+              />
+            </div>
+          </div>
+
           <div>
             <label
-              htmlFor="listing-visibility"
+              htmlFor="listing-address"
               className="block text-xs font-semibold text-text-secondary mb-1.5"
             >
-              Listing visibility
+              Address
             </label>
             <div className="relative">
+              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+              <input
+                id="listing-address"
+                type="text"
+                value={form.address}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, address: event.target.value }))
+                }
+                className={`${inputClasses} pl-9`}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label
+                htmlFor="listing-phone"
+                className="block text-xs font-semibold text-text-secondary mb-1.5"
+              >
+                Phone
+              </label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                <input
+                  id="listing-phone"
+                  type="tel"
+                  value={form.phone}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, phone: event.target.value }))
+                  }
+                  placeholder="+44 20 8940 2214"
+                  className={`${inputClasses} pl-9`}
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="listing-email"
+                className="block text-xs font-semibold text-text-secondary mb-1.5"
+              >
+                Email
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                <input
+                  id="listing-email"
+                  type="email"
+                  value={form.email}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, email: event.target.value }))
+                  }
+                  placeholder="hello@yourbusiness.co.uk"
+                  className={`${inputClasses} pl-9`}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label
+                htmlFor="listing-website"
+                className="block text-xs font-semibold text-text-secondary mb-1.5"
+              >
+                Website
+              </label>
+              <div className="relative">
+                <Globe2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                <input
+                  id="listing-website"
+                  type="text"
+                  value={form.website}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, website: event.target.value }))
+                  }
+                  placeholder="yourbusiness.co.uk"
+                  className={`${inputClasses} pl-9`}
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="listing-hours"
+                className="block text-xs font-semibold text-text-secondary mb-1.5"
+              >
+                Opening hours
+              </label>
+              <div className="relative">
+                <Clock3 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+                <input
+                  id="listing-hours"
+                  type="text"
+                  value={form.openingHours}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, openingHours: event.target.value }))
+                  }
+                  placeholder="Tue – Sat · 9:00 AM – 7:00 PM"
+                  className={`${inputClasses} pl-9`}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="listing-description"
+              className="block text-xs font-semibold text-text-secondary mb-1.5"
+            >
+              About this business
+            </label>
+            <textarea
+              id="listing-description"
+              rows={3}
+              value={form.description}
+              onChange={(event) =>
+                setForm((current) => ({ ...current, description: event.target.value }))
+              }
+              placeholder="Tell customers what makes your business a local favourite."
+              className={`${inputClasses} resize-none`}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label
+                htmlFor="listing-visibility"
+                className="block text-xs font-semibold text-text-secondary mb-1.5"
+              >
+                Listing visibility
+              </label>
               <select
                 id="listing-visibility"
-                value={status}
+                value={form.status}
                 onChange={(event) => {
                   const nextStatus = event.target.value as OwnerListingStatus;
-                  setStatus(nextStatus);
-                  setAcceptingBookings(nextStatus === 'published');
+                  setForm((current) => ({
+                    ...current,
+                    status: nextStatus,
+                    acceptingBookings: nextStatus === 'published',
+                  }));
                 }}
-                className="w-full appearance-none rounded-lg border border-border-subtle bg-surface-card px-3 py-2.5 pr-9 text-sm text-text-primary font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                className={inputClasses}
               >
                 <option value="published">Published — visible to customers</option>
                 <option value="paused">Paused — temporarily hidden</option>
                 <option value="draft">Draft — only visible to you</option>
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
             </div>
-          </div>
 
-          <div className="flex items-center justify-between gap-4 rounded-xl border border-border-subtle p-3">
-            <div>
-              <p className="text-sm font-semibold text-text-primary">Accept online bookings</p>
-              <p className="text-[11px] text-text-muted mt-0.5">
-                Allow customers to reserve an appointment slot.
-              </p>
-            </div>
-            <button
-              type="button"
-              role="switch"
-              aria-checked={acceptingBookings}
-              onClick={() => setAcceptingBookings((value) => !value)}
-              className={`relative w-11 h-6 rounded-full shrink-0 transition-colors ${
-                acceptingBookings ? 'bg-primary' : 'bg-surface-dim'
-              }`}
-            >
-              <span
-                className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${
-                  acceptingBookings ? 'translate-x-[22px]' : 'translate-x-0.5'
+            <div className="flex items-center justify-between gap-4 rounded-xl border border-border-subtle p-3">
+              <div>
+                <p className="text-sm font-semibold text-text-primary">Accept online bookings</p>
+                <p className="text-[11px] text-text-muted mt-0.5">
+                  Allow customers to reserve a slot.
+                </p>
+              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={form.acceptingBookings}
+                onClick={() =>
+                  setForm((current) => ({
+                    ...current,
+                    acceptingBookings: !current.acceptingBookings,
+                  }))
+                }
+                className={`relative w-11 h-6 rounded-full shrink-0 transition-colors ${
+                  form.acceptingBookings ? 'bg-primary' : 'bg-surface-dim'
                 }`}
-              />
-            </button>
+              >
+                <span
+                  className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${
+                    form.acceptingBookings ? 'translate-x-[22px]' : 'translate-x-0.5'
+                  }`}
+                />
+              </button>
+            </div>
           </div>
 
           <div className="flex items-start gap-2.5 rounded-xl bg-teal-wash border border-primary/10 p-3">
-            <CalendarClock className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+            <Store className="w-4 h-4 text-primary shrink-0 mt-0.5" />
             <p className="text-[11px] text-text-secondary leading-relaxed">
-              Next availability: <strong className="text-text-primary">{listing.nextAvailable}</strong>.
-              Changes in this preview are frontend-only and reset on refresh.
+              These changes are saved in this preview only and reset when the page reloads.
+              Your personal bookings at <strong className="text-text-primary">/account</strong> stay
+              in this same NearNest account, alongside your business management.
             </p>
           </div>
         </div>
@@ -185,18 +404,11 @@ export const ManageListingModal: React.FC<ManageListingModalProps> = ({
           </button>
           <button
             type="button"
-            onClick={() =>
-              onSave({
-                ...listing,
-                status,
-                nextAvailable: acceptingBookings
-                  ? 'Now accepting bookings'
-                  : listing.nextAvailable,
-              })
-            }
-            className="px-4 py-2.5 rounded-lg bg-primary hover:bg-teal-deep text-white text-sm font-semibold shadow-sm transition-all active:scale-95"
+            onClick={handleSave}
+            disabled={!canSave}
+            className="px-4 py-2.5 rounded-lg bg-primary hover:bg-teal-deep text-white text-sm font-semibold shadow-sm transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Save changes
+            Save business details
           </button>
         </div>
       </div>

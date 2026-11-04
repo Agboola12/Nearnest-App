@@ -12,6 +12,7 @@ import { ServicesDirectoryPage } from './pages/ServicesDirectoryPage';
 import { ChurchesSchoolsPage } from './pages/ChurchesSchoolsPage';
 import { HowItWorksPage } from './pages/HowItWorksPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
+import { ListingWizardPage } from './pages/ListingWizardPage';
 import { OwnerLayout } from './layouts/OwnerLayout';
 
 export const App: React.FC = () => {
@@ -21,6 +22,7 @@ export const App: React.FC = () => {
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/owner" element={<OwnerLayout />}>
           <Route index element={<OwnerDashboardPage />} />
+          <Route path="listings/new" element={<ListingWizardPage />} />
         </Route>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
@@ -41,16 +43,6 @@ export const App: React.FC = () => {
           <Route path="listing/:slug" element={<ListingProfilePage />} />
           <Route path="booking/:slug" element={<BookingPage />} />
           <Route path="account" element={<AccountPage />} />
-          <Route
-            path="owner/listings/new"
-            element={
-              <PlaceholderPage
-                title="Listing Creation Wizard"
-                description="8-step onboarding wizard for place owners and administrators."
-                phase="Phase 6: Provider Suite"
-              />
-            }
-          />
           <Route
             path="*"
             element={

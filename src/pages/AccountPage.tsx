@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { User, Calendar, Clock, MapPin, Star, ChevronRight, Settings, Heart, Bell, LogOut, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { Calendar, Clock, MapPin, Star, ChevronRight, Settings, Heart, Bell, LogOut, CheckCircle, XCircle, AlertCircle, Store } from 'lucide-react';
 import { POPULAR_LISTINGS } from '../data/mockListings';
+import { OWNER_PROFILE } from '../data/mockOwnerDashboard';
 
 const MOCK_BOOKINGS = [
   {
@@ -72,18 +73,29 @@ export const AccountPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-teal-wash border-2 border-primary flex items-center justify-center">
-                <User className="w-8 h-8 text-primary" />
-              </div>
+              <img
+                src={OWNER_PROFILE.avatar}
+                alt={OWNER_PROFILE.fullName}
+                className="w-16 h-16 rounded-full object-cover border-2 border-primary"
+              />
               <div>
                 <h1 className="text-2xl font-bold text-text-primary">My Account</h1>
-                <p className="text-text-secondary">sarah.johnson@example.com</p>
+                <p className="text-text-secondary">{OWNER_PROFILE.fullName} · {OWNER_PROFILE.email}</p>
               </div>
             </div>
-            <button className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-card border border-border-subtle text-text-secondary hover:bg-surface-warm transition-colors">
-              <Settings className="w-4 h-4" />
-              <span className="text-sm font-medium">Account Settings</span>
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              <Link
+                to="/owner"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white hover:bg-teal-deep transition-colors"
+              >
+                <Store className="w-4 h-4" />
+                <span className="text-sm font-medium">Business Dashboard</span>
+              </Link>
+              <button className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-card border border-border-subtle text-text-secondary hover:bg-surface-warm transition-colors">
+                <Settings className="w-4 h-4" />
+                <span className="text-sm font-medium">Account Settings</span>
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -132,10 +144,22 @@ export const AccountPage: React.FC = () => {
                   <Bell className="w-5 h-5" />
                   <span className="font-medium">Notifications</span>
                 </button>
-                <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-text-secondary hover:bg-surface-warm transition-colors">
+                <div className="pt-2 mt-2 border-t border-border-subtle">
+                  <Link
+                    to="/owner"
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-text-secondary hover:bg-surface-warm transition-colors"
+                  >
+                    <Store className="w-5 h-5" />
+                    <span className="font-medium">Business Dashboard</span>
+                  </Link>
+                </div>
+                <Link
+                  to="/auth"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-text-secondary hover:bg-surface-warm transition-colors"
+                >
                   <LogOut className="w-5 h-5" />
                   <span className="font-medium">Sign Out</span>
-                </button>
+                </Link>
               </nav>
             </div>
           </aside>

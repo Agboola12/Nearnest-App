@@ -1,14 +1,16 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   ArrowLeft,
+  Bell,
   CalendarDays,
   ChevronDown,
   LayoutDashboard,
+  LogOut,
   PlusCircle,
-  Settings2,
-  ShieldCheck,
   Store,
+  UserRound,
+  Wrench,
   X,
 } from 'lucide-react';
 import { BrandLogo } from '../common/BrandLogo';
@@ -17,15 +19,29 @@ import { OWNER_PROFILE } from '../../data/mockOwnerDashboard';
 interface OwnerSidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  activeSection: string;
+  unreadNotifications: number;
+  onNavigate: (section: string) => void;
 }
 
 const sectionLinks = [
-  { label: 'Appointments', href: '#appointments', icon: CalendarDays },
-  { label: 'Services & listings', href: '#listings', icon: Store },
-  { label: 'Verification', href: '#readiness', icon: ShieldCheck },
+  { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+  { id: 'appointments', label: 'Appointments', icon: CalendarDays },
+  { id: 'businesses', label: 'My Businesses', icon: Store },
+  { id: 'services', label: 'Services', icon: Wrench },
+  { id: 'notifications', label: 'Notifications', icon: Bell },
 ];
 
-export const OwnerSidebar: React.FC<OwnerSidebarProps> = ({ isOpen, onClose }) => {
+export const OwnerSidebar: React.FC<OwnerSidebarProps> = ({
+  isOpen,
+  onClose,
+  activeSection,
+  unreadNotifications,
+  onNavigate,
+}) => {
+  const location = useLocation();
+  const isListingWizard = location.pathname === '/owner/listings/new';
+
   return (
     <aside
       className={`fixed inset-y-0 left-0 z-50 w-64 bg-surface-warm border-r border-border-subtle flex flex-col overflow-y-auto transition-transform duration-300 lg:translate-x-0 ${
@@ -50,15 +66,17 @@ export const OwnerSidebar: React.FC<OwnerSidebarProps> = ({ isOpen, onClose }) =
           to="/listing/the-heritage-barber-and-co"
           className="flex items-center gap-2.5 rounded-xl border border-border-subtle bg-surface-card p-2.5 shadow-subtle hover:border-primary/40 hover:shadow-elevated transition-all"
         >
-          <span className="w-9 h-9 rounded-lg bg-teal-wash text-primary flex items-center justify-center shrink-0">
-            <Store className="w-5 h-5" />
-          </span>
+          <img
+            src={OWNER_PROFILE.businessLogo}
+            alt={OWNER_PROFILE.businessName}
+            className="w-9 h-9 rounded-lg object-cover border border-border-subtle shrink-0"
+          />
           <span className="min-w-0 flex-1">
             <span className="block text-sm font-bold text-text-primary truncate">
               {OWNER_PROFILE.businessName}
             </span>
             <span className="block text-[11px] font-semibold text-status-confirmed-text mt-0.5">
-              Verified listing
+              Verified business
             </span>
           </span>
           <ChevronDown className="w-4 h-4 text-text-muted shrink-0" />
@@ -66,39 +84,53 @@ export const OwnerSidebar: React.FC<OwnerSidebarProps> = ({ isOpen, onClose }) =
 
         <div className="mt-6 px-2">
           <p className="px-2 pb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-text-muted">
-            Workspace
+            Business workspace
           </p>
           <nav className="space-y-1">
-            <NavLink
-              to="/owner"
-              end
-              onClick={onClose}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors ${
-                  isActive
-                    ? 'bg-surface-card text-primary font-semibold shadow-subtle border border-border-subtle'
-                    : 'text-text-secondary hover:bg-surface-container hover:text-text-primary border border-transparent'
-                }`
-              }
-            >
-              <LayoutDashboard className="w-5 h-5" />
-              Overview
-            </NavLink>
-
             {sectionLinks.map((link) => {
               const Icon = link.icon;
+              const isActive = isListingWizard
+                ? link.id === 'businesses'
+                : activeSection === link.id;
+              const isNotifications = link.id === 'notifications';
+
               return (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={onClose}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-text-secondary hover:bg-surface-container hover:text-text-primary border border-transparent transition-colors"
+                <Link
+                  key={link.id}
+                  to={`/owner#${link.id}`}
+                  onClick={() => {
+                    onNavigate(link.id);
+                    onClose();
+                  }}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors ${
+                    isActive
+                      ? 'bg-surface-card text-primary font-semibold shadow-subtle border border-border-subtle'
+                      : 'text-text-secondary hover:bg-surface-container hover:text-text-primary border border-transparent'
+                  }`}
                 >
                   <Icon className="w-5 h-5" />
-                  {link.label}
-                </a>
+                  <span className="flex-1">{link.label}</span>
+                  {isNotifications && unreadNotifications > 0 && (
+                    <span className="min-w-[20px] px-1.5 py-0.5 rounded-full bg-status-pending-bg text-status-pending-text text-[10px] font-bold text-center">
+                      {unreadNotifications}
+                    </span>
+                  )}
+                </Link>
               );
             })}
+
+            <div className="pt-2 mt-2 border-t border-border-subtle">
+              <Link
+                to="/account"
+                onClick={onClose}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-text-secondary hover:bg-surface-container hover:text-text-primary border border-transparent transition-colors"
+              >
+                <UserRound className="w-5 h-5" />
+                <span className="flex-1">Personal Account</span>
+                <ArrowLeft className="w-4 h-4 rotate-180" />
+              </Link>
+            </div>
           </nav>
         </div>
 
@@ -112,7 +144,7 @@ export const OwnerSidebar: React.FC<OwnerSidebarProps> = ({ isOpen, onClose }) =
             className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-primary hover:bg-teal-deep text-white text-sm font-semibold shadow-sm transition-all active:scale-95"
           >
             <PlusCircle className="w-4 h-4" />
-            Add new listing
+            Add Business
           </Link>
         </div>
       </div>
@@ -126,6 +158,15 @@ export const OwnerSidebar: React.FC<OwnerSidebarProps> = ({ isOpen, onClose }) =
           Public directory
         </Link>
 
+        <Link
+          to="/auth"
+          onClick={onClose}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-text-secondary hover:bg-status-rejected-bg/50 hover:text-status-rejected-text transition-colors"
+        >
+          <LogOut className="w-5 h-5" />
+          Sign Out
+        </Link>
+
         <div className="border-t border-border-subtle pt-3 mt-3 flex items-center gap-3 px-1">
           <img
             src={OWNER_PROFILE.avatar}
@@ -136,15 +177,10 @@ export const OwnerSidebar: React.FC<OwnerSidebarProps> = ({ isOpen, onClose }) =
             <p className="text-sm font-semibold text-text-primary truncate">
               {OWNER_PROFILE.fullName}
             </p>
-            <p className="text-[11px] text-text-muted truncate">Business owner</p>
+            <p className="text-[11px] text-text-muted truncate">
+              One account · personal + business
+            </p>
           </div>
-          <Link
-            to="/account"
-            aria-label="Account settings"
-            className="p-1.5 rounded-lg text-text-muted hover:bg-surface-container hover:text-text-primary transition-colors"
-          >
-            <Settings2 className="w-4 h-4" />
-          </Link>
         </div>
       </div>
     </aside>

@@ -167,3 +167,34 @@ export interface OwnerAppointment {
   status: AppointmentStatus;
   listingName: string;
 }
+
+/** A service row inside the business listing creation wizard. */
+export interface ListingWizardService {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  duration: string;
+}
+
+/** One day of opening hours in the business listing creation wizard. */
+export interface ListingOpeningDay {
+  day: string;
+  isClosed: boolean;
+  open: string;
+  close: string;
+}
+
+/** A selected image (data URL or sample URL) in the listing wizard. */
+export interface ListingWizardImage {
+  id: string;
+  src: string;
+  name: string;
+  size?: number;
+}
+
+export interface ListingWizardImages {
+  logo: ListingWizardImage | null;
+  cover: ListingWizardImage | null;
+  gallery: ListingWizardImage[];
+}

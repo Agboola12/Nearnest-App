@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { Search, PlusCircle, Bell, Menu, X } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
+import { OWNER_PROFILE } from '../../data/mockOwnerDashboard';
 
 export const SiteHeader: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -97,8 +98,8 @@ export const SiteHeader: React.FC = () => {
           >
             <div className="w-9 h-9 rounded-full bg-surface-warm border border-border-subtle flex items-center justify-center font-bold text-xs text-text-primary shadow-sm overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
-                alt="Account profile"
+                src={OWNER_PROFILE.avatar}
+                alt={`${OWNER_PROFILE.fullName} account`}
                 className="w-full h-full object-cover"
               />
             </div>
