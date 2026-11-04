@@ -23,7 +23,7 @@ interface OwnerTopbarProps {
 
 const sectionLabels: Record<string, string> = {
   overview: 'Overview',
-  appointments: 'Appointments',
+  appointments: 'Appointment Management',
   businesses: 'My Businesses',
   services: 'Services',
   notifications: 'Notifications',

@@ -26,7 +26,7 @@ interface OwnerSidebarProps {
 
 const sectionLinks = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-  { id: 'appointments', label: 'Appointments', icon: CalendarDays },
+  { id: 'appointments', label: 'Appointment Management', icon: CalendarDays },
   { id: 'businesses', label: 'My Businesses', icon: Store },
   { id: 'services', label: 'Services', icon: Wrench },
   { id: 'notifications', label: 'Notifications', icon: Bell },
@@ -41,6 +41,7 @@ export const OwnerSidebar: React.FC<OwnerSidebarProps> = ({
 }) => {
   const location = useLocation();
   const isListingWizard = location.pathname === '/owner/listings/new';
+  const isAppointmentsPage = location.pathname === '/owner/appointments';
 
   return (
     <aside
@@ -91,13 +92,17 @@ export const OwnerSidebar: React.FC<OwnerSidebarProps> = ({
               const Icon = link.icon;
               const isActive = isListingWizard
                 ? link.id === 'businesses'
-                : activeSection === link.id;
+                : isAppointmentsPage
+                  ? link.id === 'appointments'
+                  : activeSection === link.id;
               const isNotifications = link.id === 'notifications';
+              const href =
+                link.id === 'appointments' ? '/owner/appointments' : `/owner#${link.id}`;
 
               return (
                 <Link
                   key={link.id}
-                  to={`/owner#${link.id}`}
+                  to={href}
                   onClick={() => {
                     onNavigate(link.id);
                     onClose();

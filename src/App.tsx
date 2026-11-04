@@ -13,6 +13,7 @@ import { ChurchesSchoolsPage } from './pages/ChurchesSchoolsPage';
 import { HowItWorksPage } from './pages/HowItWorksPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import { ListingWizardPage } from './pages/ListingWizardPage';
+import { OwnerAppointmentsPage } from './pages/OwnerAppointmentsPage';
 import { OwnerLayout } from './layouts/OwnerLayout';
 
 export const App: React.FC = () => {
@@ -22,6 +23,7 @@ export const App: React.FC = () => {
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/owner" element={<OwnerLayout />}>
           <Route index element={<OwnerDashboardPage />} />
+          <Route path="appointments" element={<OwnerAppointmentsPage />} />
           <Route path="listings/new" element={<ListingWizardPage />} />
         </Route>
         <Route path="/" element={<MainLayout />}>

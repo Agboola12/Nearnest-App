@@ -37,7 +37,13 @@ import { ServiceCard } from '../components/owner/ServiceCard';
 import { ServiceModal } from '../components/owner/ServiceModal';
 import { NotificationList } from '../components/owner/NotificationList';
 
-type AppointmentTab = 'upcoming' | 'pending' | 'confirmed' | 'completed' | 'cancelled';
+type AppointmentTab =
+  | 'upcoming'
+  | 'pending'
+  | 'confirmed'
+  | 'completed'
+  | 'cancelled'
+  | 'rejected';
 type AvailabilityStatus = 'open' | 'full' | 'break';
 
 interface OwnerNotificationsContext {
@@ -191,6 +197,7 @@ export const OwnerDashboardPage: React.FC = () => {
     confirmed: appointments.filter((appointment) => appointment.status === 'confirmed').length,
     completed: appointments.filter((appointment) => appointment.status === 'completed').length,
     cancelled: appointments.filter((appointment) => appointment.status === 'cancelled').length,
+    rejected: appointments.filter((appointment) => appointment.status === 'rejected').length,
   };
 
   const activeServices = services.filter((service) => service.isActive).length;
@@ -220,9 +227,13 @@ export const OwnerDashboardPage: React.FC = () => {
     visibleAppointments = sortedAppointments.filter(
       (appointment) => appointment.status === 'completed'
     );
-  } else {
+  } else if (activeTab === 'cancelled') {
     visibleAppointments = sortedAppointments.filter(
       (appointment) => appointment.status === 'cancelled'
+    );
+  } else {
+    visibleAppointments = sortedAppointments.filter(
+      (appointment) => appointment.status === 'rejected'
     );
   }
 
@@ -281,6 +292,7 @@ export const OwnerDashboardPage: React.FC = () => {
     { id: 'confirmed', label: 'Confirmed', count: counts.confirmed },
     { id: 'completed', label: 'Completed', count: counts.completed },
     { id: 'cancelled', label: 'Cancelled', count: counts.cancelled },
+    { id: 'rejected', label: 'Rejected', count: counts.rejected },
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -316,7 +328,7 @@ export const OwnerDashboardPage: React.FC = () => {
   const handleReject = (appointment: OwnerAppointment) => {
     updateAppointmentStatus(
       appointment.id,
-      'cancelled',
+      'rejected',
       `${appointment.customerName}'s booking request has been rejected.`
     );
   };
@@ -824,14 +836,13 @@ export const OwnerDashboardPage: React.FC = () => {
                 <span>
                   Showing {visibleAppointments.length} of {appointments.length} appointments
                 </span>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('upcoming')}
+                <Link
+                  to="/owner/appointments"
                   className="inline-flex items-center gap-1 font-semibold text-primary hover:text-teal-deep self-start sm:self-auto"
                 >
-                  View upcoming schedule
+                  Manage all appointments
                   <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                </Link>
               </div>
             </div>
 

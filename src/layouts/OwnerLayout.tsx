@@ -20,6 +20,8 @@ export const OwnerLayout: React.FC = () => {
   const [notifications, setNotifications] = useState<OwnerNotification[]>(OWNER_NOTIFICATIONS);
 
   const unreadCount = notifications.filter((notification) => !notification.isRead).length;
+  const isAppointmentsPage = location.pathname === '/owner/appointments';
+  const navigationSection = isAppointmentsPage ? 'appointments' : activeSection;
 
   useEffect(() => {
     if (!location.hash) {
@@ -90,7 +92,7 @@ export const OwnerLayout: React.FC = () => {
       <OwnerSidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        activeSection={activeSection}
+        activeSection={navigationSection}
         unreadNotifications={unreadCount}
         onNavigate={setActiveSection}
       />
@@ -110,7 +112,7 @@ export const OwnerLayout: React.FC = () => {
           notifications={notifications}
           unreadCount={unreadCount}
           onMarkAllRead={markAllNotificationsRead}
-          activeSection={activeSection}
+          activeSection={navigationSection}
         />
 
         <main className="flex-1 pt-16">
